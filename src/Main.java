@@ -132,9 +132,16 @@ public class Main {
     }
 
     public static void CalcularMetricas(List<Processo> processos) {
-        return fila.stream()
-                .min(Comparator.comparingInt(p -> p.tempoRestante))
-                .orElse(null);
+
+        System.out.println("\n\nMétricas de Desempenho:");
+        System.out.println("Processo\tT.Espera\tT.Resposta\tT.Termino");
+        System.out.println("-----------------------------------------------");
+
+        for (Processo p : processos) {
+            System.out.println(p.nome + "\t\t" + p.tempoEspera + "\t\t" +
+                    p.tempoResposta + "\t\t" + p.tempoTermino);
+        }
+
     }
 
     public static void calcularMetricas(List<Processo> processos) {
