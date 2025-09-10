@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Main {
 
@@ -46,6 +44,40 @@ public class Main {
 
                 //Calcular a exibir métricas
                 calcularMetricas(processos);
+            }
+
+            public static void simularEscalonamento(List<Processo> processos) {
+                int tempoAtual = 0;
+                int processosFinalizados = 0;
+                Processo processoAtual = null;
+
+                Queue<Processo> filaProntos = new LinkedList<>();
+
+                System.out.println("TEMPO/ PROCESSO / AÇÃO ");
+                System.out.println("-----------------------------");
+
+                while(processosFinalizados < processos.size()) {
+                    //Verifica se algum processo chega nesse tempo
+                    for (Processo processo : processos) {
+                        if(processo.tempoChegada == tempoAtual){
+                            filaProntos.add(processo);
+                            System.out.println(tempoAtual + processo.nome +
+                                    " Chegou na fila de prontos ");
+                        }
+                    }
+                }
+
+                //Se não há processo em execução, pega a próxima fila
+                if(processoAtual == null || !filaProntos.isEmpty()) {
+                    processoAtual = encontrarProcessoMaisCurto(filaProntos);
+                    filaProntos.remove(processoAtual);
+                }
+
+                if(!processoAtual.iniciado) {
+                    processoAtual.tempoResposta = tempoAtual - processoAtual.tempoChegada;
+                    processoAtual.iniciado = true;
+                }
+
             }
         }
 
