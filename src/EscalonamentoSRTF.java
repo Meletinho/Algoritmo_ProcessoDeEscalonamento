@@ -22,7 +22,7 @@ class Processo {
     }
 }
 
-public class Main {
+public class EscalonamentoSRTF {
 
     public static void main(String[] args) {
         // Criando os processos conforme a tabela
