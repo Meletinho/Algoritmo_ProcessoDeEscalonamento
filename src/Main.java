@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Main {
@@ -26,7 +27,27 @@ public class Main {
         }
 
 
-        
+        public class SimulacaoEscalonamento {
+
+            public static void main(String[] args) {
+
+                //Cria processos conforme a tabela
+                List<Processo> processos = new ArrayList<>();
+                processos.add(new Processo ("P1", 0, 7));
+                processos.add(new Processo("P1", 0, 4));
+                processos.add(new Processo("P2", 4, 1));
+                processos.add(new Processo("P3", 5, 4));
+
+                //Ordenar processos por tempo de chegada
+                processos.sort(Comparator.comparingInt(p -> p.tempoChegada));
+
+                //Simula o escalonamento
+                simularEscalonamento(processos);
+
+                //Calcular a exibir métricas
+                calcularMetricas(processos);
+            }
+        }
 
           }
 
