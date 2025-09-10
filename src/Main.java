@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.*;
 
 class Processo {
     String nome;
@@ -33,10 +32,13 @@ public class Main {
         processos.add(new Processo("P3", 4, 1));
         processos.add(new Processo("P4", 5, 4));
 
+        // Ordenar processos por tempo de chegada
         processos.sort(Comparator.comparingInt(p -> p.tempoChegada));
 
+        // Simulação do escalonamento
         simularEscalonamento(processos);
 
+        // Calcular e exibir métricas
         calcularMetricas(processos);
     }
 
@@ -52,75 +54,64 @@ public class Main {
         System.out.println("----------------------------------");
 
         while (processosFinalizados < processos.size()) {
-
-            // Verifica se algum processo chegou neste tempo
-            while (processosFinalizados < processos.size()) {
-                for (Processo processo : processos) {
-                    if (processo.tempoChegada == tempoAtual) {
-                        System.out.println(tempoAtual + "\t" +
-                                processo.nome +
-                                "\t\tChegou na fila de prontos");
-                    }
+            // Verificar se algum processo chegou neste tempo
+            for (Processo p : processos) {
+                if (p.tempoChegada == tempoAtual) {
+                    filaProntos.add(p);
+                    System.out.println(tempoAtual + "\t" + p.nome + "\t\tChegou na fila de prontos");
                 }
             }
 
-
-            // Ordena a fila por tempo restante
+            // Ordenar a fila por tempo restante (menor primeiro)
             if (!filaProntos.isEmpty()) {
-                filaProntos.sort(Comparator.comparingInt(p -> p.tempoChegada));
+                filaProntos.sort(Comparator.comparingInt(p -> p.tempoRestante));
             }
 
-            if (!processoAtual.iniciado) {
+            // Se não há processo em execução, pegar o próximo da fila
+            if (processoAtual == null && !filaProntos.isEmpty()) {
+                processoAtual = filaProntos.get(0);
+                filaProntos.remove(0);
 
-                processoAtual.tempoResposta = tempoAtual - processoAtual.tempoChegada;
-                processoAtual.iniciado = true;
+                if (!processoAtual.iniciado) {
+                    processoAtual.tempoResposta = tempoAtual - processoAtual.tempoChegada;
+                    processoAtual.iniciado = true;
+                }
+
+                System.out.println(tempoAtual + "\t" + processoAtual.nome + "\t\tIniciou execução");
             }
 
-            System.out.println(tempoAtual + "\t" + processoAtual.nome +
-                    "\t\t Iniciou a execução");
-        }
-
-
-            // Se há processo em execução, executá-lo
+            // Verificar se há processo mais prioritário na fila
             if (processoAtual != null && !filaProntos.isEmpty()) {
                 Processo processoMaisCurto = filaProntos.get(0);
-
-                // Verificar se o processo terminou
-                if (processoAtual.tempoRestante < processoAtual.tempoRestante) {
-
-                    //Preemptar o processo atual
+                if (processoMaisCurto.tempoRestante < processoAtual.tempoRestante) {
+                    // Preemptar o processo atual
                     filaProntos.add(processoAtual);
-                    System.out.println(tempoAtual + "\t"
-                            + processoAtual.nome + "\t\tPreemptado");
+                    System.out.println(tempoAtual + "\t" + processoAtual.nome + "\t\tPreemptado");
+
                     processoAtual = processoMaisCurto;
                     filaProntos.remove(0);
 
-                    if (!filaProntos.iniciado) {
+                    if (!processoAtual.iniciado) {
                         processoAtual.tempoResposta = tempoAtual - processoAtual.tempoChegada;
                         processoAtual.iniciado = true;
                     }
 
-                    if (!processoAtual.iniciado) {
-                        processoAtual.tempoResposta = tempoAtual + 1 - processoAtual.tempoChegada;
-                        processoAtual.iniciado = true;
-                    }
                     System.out.println(tempoAtual + "\t" + processoAtual.nome + "\t\tIniciou execução");
                 }
             }
 
-                    //Executar o processo atual
-                    if(processoAtual != null){
-                        processoAtual.tempoRestante--;
+            // Executar o processo atual
+            if (processoAtual != null) {
+                processoAtual.tempoRestante--;
 
-                        //Verificar se o processo terminou
-                        if(processoAtual.tempoRestante == 0){
-                            processoAtual.tempoTermino = tempoAtual + 1;
-                            processosFinalizados++;
-                            System.out.println((tempoAtual + 1) + "\t" + processoAtual.nome + "\t\tTerminou");
-                            processoAtual = null;
-                        }
-                    }
-
+                // Verificar se o processo terminou
+                if (processoAtual.tempoRestante == 0) {
+                    processoAtual.tempoTermino = tempoAtual + 1;
+                    processosFinalizados++;
+                    System.out.println((tempoAtual + 1) + "\t" + processoAtual.nome + "\t\tTerminou");
+                    processoAtual = null;
+                }
+            }
 
             // Atualizar tempo de espera dos processos na fila
             for (Processo p : filaProntos) {
@@ -131,8 +122,7 @@ public class Main {
         }
     }
 
-    public static void CalcularMetricas(List<Processo> processos) {
-
+    public static void calcularMetricas(List<Processo> processos) {
         System.out.println("\n\nMétricas de Desempenho:");
         System.out.println("Processo\tT.Espera\tT.Resposta\tT.Termino");
         System.out.println("-----------------------------------------------");
@@ -142,15 +132,19 @@ public class Main {
                     p.tempoResposta + "\t\t" + p.tempoTermino);
         }
 
-    }
-
-
-        // Calcular médias
+        // Calculo das médias
         double tempoEsperaMedio = processos.stream().mapToInt(p -> p.tempoEspera).average().orElse(0);
         double tempoRespostaMedio = processos.stream().mapToInt(p -> p.tempoResposta).average().orElse(0);
 
         System.out.println("-----------------------------------------------");
         System.out.printf("Média:\t\t%.2f\t\t%.2f\n", tempoEsperaMedio, tempoRespostaMedio);
+
+        // Calcula o throughput
+        int tempoTotal = processos.stream().mapToInt(p -> p.tempoTermino).max().orElse(0);
+        double throughput = (double) processos.size() / tempoTotal;
+        System.out.println("Throughput: " + throughput + " processos/unidade de tempo");
+    }
+}
 
 
 
