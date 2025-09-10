@@ -1,12 +1,12 @@
-# 📚 Projeto de Simulação de Escalonamento SRTF
+#  Projeto de Simulação de Escalonamento SRTF
 
-## 🎯 Descrição do Projeto
+##  Descrição do Projeto
 
 Este projeto implementa uma **simulação detalhada do algoritmo de escalonamento Shortest Remaining Time First (SRTF)**, um algoritmo preemptivo que sempre seleciona o processo com o menor tempo restante de execução. Desenvolvido em Java, o simulador demonstra o comportamento desse algoritmo em um ambiente de sistema operacional, calculando métricas de desempenho essenciais para análise de eficiência.
 
 ---
 
-## ⚙️ Características do Algoritmo SRTF
+## ⚙ Características do Algoritmo SRTF
 
 ### Princípio de Funcionamento
 O SRTF (Shortest Remaining Time First) é um algoritmo de escalonamento preemptivo que:
@@ -16,20 +16,20 @@ O SRTF (Shortest Remaining Time First) é um algoritmo de escalonamento preempti
 - Oferece alta **responsividade** para processos curtos
 
 ### Vantagens
-- ✅ Menor tempo médio de espera entre algoritmos de escalonamento
-- ✅ Eficiência no uso da CPU
-- ✅ Responsividade para processos curtos
-- ✅ Prevenção contra starvation através de preempção
+-  Menor tempo médio de espera entre algoritmos de escalonamento
+-  Eficiência no uso da CPU
+-  Responsividade para processos curtos
+-  Prevenção contra starvation através de preempção
 
 ### Desvantagens
-- ⚠️ Dificuldade de implementação em sistemas reais
-- ⚠️ Impossibilidade de conhecer tempo de execução futuro
-- ⚠️ Overhead de preempção constante
-- ⚠️ Potencial starvation de processos longos
+-  Dificuldade de implementação em sistemas reais
+-  Impossibilidade de conhecer tempo de execução futuro
+-  Overhead de preempção constante
+-  Potencial starvation de processos longos
 
 ---
 
-## 📊 Processos Utilizados na Simulação
+##  Processos Utilizados na Simulação
 
 | Processo | Tempo de Chegada | Tempo de Surto |
 |----------|------------------|----------------|
@@ -40,7 +40,7 @@ O SRTF (Shortest Remaining Time First) é um algoritmo de escalonamento preempti
 
 ---
 
-## ⏱️ Cronograma de Execução
+##  Cronograma de Execução
 
 ```
 Tempo 0-2:   P1 executa (ininterrupto)
@@ -76,7 +76,7 @@ Tempo 11-16: P1 executa (todos os outros processos terminaram)
 
 ---
 
-## 🏗️ Estrutura do Código
+##  Estrutura do Código
 
 ### Classe Processo
 Armazena todas as informações de um processo:
@@ -108,7 +108,7 @@ if (processoAtual != null && !filaProntos.isEmpty()) {
 
 ---
 
-## 🚀 Como Executar
+## Como Executar
 
 ### Pré-requisitos
 - Java JDK 8 ou superior
@@ -128,7 +128,7 @@ O programa exibirá:
 
 ---
 
-## 🎓 Aplicações e Importância Acadêmica
+##  Aplicações e Importância Acadêmica
 
 Este simulador é valioso para:
 - Compreensão prática de algoritmos de escalonamento
@@ -139,7 +139,7 @@ Este simulador é valioso para:
 
 ---
 
-## 📋 Considerações Finais
+##  Considerações Finais
 
 Esta implementação demonstra com precisão o comportamento teórico do algoritmo SRTF, incluindo todos os pontos de preempção e cálculos de métricas. O projeto serve como base sólida para o entendimento dos trade-offs envolvidos no escalonamento de processos e oferece insights valiosos sobre o funcionamento interno de sistemas operacionais.
 
