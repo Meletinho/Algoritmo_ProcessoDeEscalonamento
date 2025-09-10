@@ -54,37 +54,44 @@ public class Main {
         while (processosFinalizados < processos.size()) {
 
             // Verifica se algum processo chegou neste tempo
-           while (processosFinalizados < processos.size()) {
-               for (Processo processo : processos) {
-                   filaProntos.add(processo);
-                   System.out.println(tempoAtual + "\t" + processo.nome + "\t\tChegou na fila de prontos");
-               }
-           }
-
-            // Se não há processo em execução, pegar o próximo da fila
-            if (processoAtual == null && !filaProntos.isEmpty()) {
-                processoAtual = encontrarProcessoMaisCurto(filaProntos);
-                filaProntos.remove(processoAtual);
-
-                if (!processoAtual.iniciado) {
-                    processoAtual.tempoResposta = tempoAtual - processoAtual.tempoChegada;
-                    processoAtual.iniciado = true;
+            while (processosFinalizados < processos.size()) {
+                for (Processo processo : processos) {
+                    if (processo.tempoChegada == tempoAtual) {
+                        System.out.println(tempoAtual + "\t" +
+                                processo.nome +
+                                "\t\tChegou na fila de prontos");
+                    }
                 }
-
-                System.out.println(tempoAtual + "\t" + processoAtual.nome + "\t\tIniciou execução");
             }
 
+
+            // Ordena a fila por tempo restante
+            if (!filaProntos.isEmpty()) {
+                filaProntos.sort(Comparator.comparingInt(p -> p.tempoChegada));
+            }
+
+            if (!processoAtual.iniciado) {
+
+                processoAtual.tempoResposta = tempoAtual - processoAtual.tempoChegada;
+                processoAtual.iniciado = true;
+            }
+
+            System.out.println(tempoAtual + "\t" + processoAtual.nome +
+                    "\t\t Iniciou a execução");
+        }
+
+
             // Se há processo em execução, executá-lo
-            if (processoAtual != null) {
-                processoAtual.tempoRestante--;
+            if (processoAtual != null && !filaProntos.isEmpty()) {
+                Processo processoMaisCurto = filaProntos.get(0);
 
                 // Verificar se o processo terminou
-                if (processoAtual.tempoRestante == 0) {
-                    processoAtual.tempoTermino = tempoAtual + 1;
-                    processosFinalizados++;
-                    System.out.println((tempoAtual + 1) + "\t" + processoAtual.nome + "\t\tTerminou");
-                    processoAtual = null;
+                if (processoAtual.tempoRestante < processoAtual.tempoRestante) {
 
+                    //Preemptar o processo atual
+                    filaProntos.add(processoAtual);
+                    System.out.println(tempoAtual + "\t"
+                            + processoAtual.nome + "\t\tPreemptado");
                     // Se há processos na fila, pegar o próximo
                     if (!filaProntos.isEmpty()) {
                         processoAtual = encontrarProcessoMaisCurto(filaProntos);
