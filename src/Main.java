@@ -144,25 +144,13 @@ public class Main {
 
     }
 
-    public static void calcularMetricas(List<Processo> processos) {
-        System.out.println("\n\nMétricas de Desempenho:");
-        System.out.println("Processo\tT.Espera\tT.Resposta\tT.Termino");
-        System.out.println("-----------------------------------------------");
-
-        for (Processo p : processos) {
-            System.out.println(p.nome + "\t\t" + p.tempoEspera + "\t\t" +
-                    p.tempoResposta + "\t\t" + p.tempoTermino);
-        }
 
         // Calcular médias
         double tempoEsperaMedio = processos.stream().mapToInt(p -> p.tempoEspera).average().orElse(0);
         double tempoRespostaMedio = processos.stream().mapToInt(p -> p.tempoResposta).average().orElse(0);
 
         System.out.println("-----------------------------------------------");
-        System.out.println("Média:\t\t" + tempoEsperaMedio + "\t\t" + tempoRespostaMedio);
-    }
-}
-
+        System.out.printf("Média:\t\t%.2f\t\t%.2f\n", tempoEsperaMedio, tempoRespostaMedio);
 
 
 
